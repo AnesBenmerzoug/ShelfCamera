@@ -27,3 +27,8 @@ and then using it to install numpy and openCV and imutils, which is a series of 
 
     $ pip install numpy opencv-python imutils
     
+### Running
+
+In order to run the program you just need to clone this repository and then go into the src folder and run the main.py script
+
+    $ python main.py
