@@ -1,8 +1,17 @@
 import numpy as np
 import cv2
 from imutils.object_detection import non_max_suppression
+from Tkinter import *
 
 ESC_keycode = 27
+
+line_thickness = 3
+
+shelf_line_color = (255, 0, 0)
+shelf_area_color = (0, 255, 0)
+
+shelf_line_text = "With the left mouse button, click and drag to draw the shelf line\nPress the ESC key when done"
+shelf_area_text = "With the left mouse button, click 4 times on the image to put the vertices of the shelf area\nPress the ESC key when done"
 
 class ShelfCamera:
     ## Class Init Function
@@ -26,11 +35,20 @@ class ShelfCamera:
 
         # Drawing Shelf Line
 
-        # Set Mouse Callback for Drawing the Shelf Line
-        cv2.setMouseCallback(self.window_name, self.draw_shelf_line)
-
         # Make a copy of the First Frame
         self.shelf_line_frame = self.first_frame.copy()
+        cv2.imshow(self.window_name, self.shelf_line_frame)
+
+        # Pop-up window
+        window = Tk()
+        window.title("Shelf Line Instructions")
+
+        Label(window, text=shelf_line_text).pack()
+
+        window.mainloop()
+
+        # Set Mouse Callback for Drawing the Shelf Line
+        cv2.setMouseCallback(self.window_name, self.draw_shelf_line)
 
         # Show image and wait for user to draw Shelf Line and Press the ESC key
         while True:
@@ -40,11 +58,20 @@ class ShelfCamera:
 
         # Drawing Shelf Area
 
-        # Set Mouse Callback for Drawing the Shelf Area
-        cv2.setMouseCallback(self.window_name, self.draw_shelf_area)
-
         # Make a copy of the First Frame
         self.shelf_area_frame = self.first_frame.copy()
+        cv2.imshow(self.window_name, self.shelf_area_frame)
+
+        # Pop-up window
+        window = Tk()
+        window.title("Shelf Area Instructions")
+
+        Label(window, text=shelf_area_text).pack()
+
+        window.mainloop()
+
+        # Set Mouse Callback for Drawing the Shelf Area
+        cv2.setMouseCallback(self.window_name, self.draw_shelf_area)
 
         # Show image and wait for user to draw Shelf Area and Press the ESC key
         while True:
@@ -85,12 +112,12 @@ class ShelfCamera:
         if event == cv2.EVENT_MOUSEMOVE:
             if self.drawing is True:
                 self.shelf_line_frame = self.first_frame.copy()
-                cv2.line(self.shelf_line_frame, self.shelf_line[0], (x, y), (255, 0, 0), 2)
+                cv2.line(self.shelf_line_frame, self.shelf_line[0], (x, y), shelf_line_color, line_thickness)
 
         if event == cv2.EVENT_LBUTTONUP:
             self.drawing = False
             self.shelf_line[1] = (x, y)
-            cv2.line(self.shelf_line_frame, self.shelf_line[0], self.shelf_line[1], (255, 0, 0), 2)
+            cv2.line(self.shelf_line_frame, self.shelf_line[0], self.shelf_line[1], shelf_line_color, line_thickness)
 
     ## Draw Shelf Area Function
     def draw_shelf_area(self, event, x, y, flags, param):
@@ -100,11 +127,11 @@ class ShelfCamera:
                 self.shelf_area_frame = self.first_frame.copy()
             self.shelf_area[self.shelf_area_index:, 0] = [x, y]
             self.shelf_area_index += 1
-            cv2.polylines(self.shelf_area_frame, [self.shelf_area], True, (0, 255, 0))
+            cv2.polylines(self.shelf_area_frame, [self.shelf_area], True, shelf_area_color, line_thickness)
         if event == cv2.EVENT_LBUTTONUP:
             if self.shelf_area_index == 4:
                 self.shelf_area_frame = self.first_frame.copy()
-                cv2.polylines(self.shelf_area_frame, [self.shelf_area], True, (0, 255, 0))
+                cv2.polylines(self.shelf_area_frame, [self.shelf_area], True, shelf_area_color, line_thickness)
                 self.shelf_area_index = 0
                 self.drawing = False
 
