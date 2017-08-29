@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 import sys
 from imutils.object_detection import non_max_suppression
-from Tkinter import *
+#from Tkinter import *
 
 ENTER_keycode = 13
 ESC_keycode = 27
