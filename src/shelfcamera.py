@@ -52,14 +52,15 @@ class ShelfCamera:
 
         cv2.imshow(self.window_name, self.draw_frame)
 
+        """
         # Pop-up window 1
         window = Tk()
         window.title("Shelf Drawing Instructions")
 
         Label(window, text=shelf_text).pack(padx=10, pady=10)
         Button(window, text="OK", command=lambda: window.destroy()).pack(padx=10, pady=10)
-
         window.mainloop()
+        """
 
         # Set Mouse Callback for Drawing the Shelf Line
         cv2.setMouseCallback(self.window_name, self.draw_shelf)
@@ -81,6 +82,7 @@ class ShelfCamera:
         self.copy_frame = self.draw_frame.copy()
         cv2.imshow(self.window_name, self.draw_frame)
 
+        """
         # Pop-up window 2
         window = Tk()
         window.title("Shelf Area Drawing Instructions")
@@ -88,6 +90,7 @@ class ShelfCamera:
         Label(window, text=shelf_area_text).pack(padx=10, pady=10)
         Button(window, text="OK", command=lambda: window.destroy()).pack(padx=10, pady=10)
         window.mainloop()
+        """
 
         # Set Mouse Callback for Drawing the Shelf Area
         cv2.setMouseCallback(self.window_name, self.draw_shelf_area)
@@ -110,6 +113,7 @@ class ShelfCamera:
         self.hog = cv2.HOGDescriptor()
         self.hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
+        """
         # Pop-up window 3
         window = Tk()
         window.title("Detection and Tracking Instructions")
@@ -117,6 +121,7 @@ class ShelfCamera:
         Label(window, text=detect_track_text).pack(padx=10, pady=10)
         Button(window, text="OK", command=lambda: window.destroy()).pack(padx=10, pady=10)
         window.mainloop()
+        """
 
         # Running Detection and Tracking loop
         self.detect_and_track_people()
